@@ -6,3 +6,25 @@
 .cardLink:hover{
     color: #000;
 }
+
+.card{
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.listPost .card:hover{
+    background-color: rgb(162, 162, 162);
+    transition: 0.3s;
+}
+
+.card-subtitle{
+    font-weight: normal !important;
+}
+
+body{
+    background-color: #E6E6E6;
+}
+
+.albumList{
+    height: 200px;
+}

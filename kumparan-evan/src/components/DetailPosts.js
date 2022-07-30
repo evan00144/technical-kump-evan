@@ -1,63 +1,67 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { getAlbum, getComment, getPhotos, getPost, getUser } from "../redux/action";
+import './DetailPosts.css'
 
-const DetailPosts = () => {
+
+const DetailPosts = (props) => {
     const location = useLocation()
-    const { userId, postId } = location.state;
-    const { post, user, comment } = useSelector(state => state.userReducer);
-    const [postRes, setPostRes] = useState([]);
-    const [userRes, setUserRes] = useState([]);
-    const [commentRes, setCommentRes] = useState([]);
+    const { userId, postId } = location.state
+    const [post, setPost] = useState([]);
+    const [user, setUser] = useState([]);
+    const [comment, setComment] = useState([]);
 
-    const dispatch = useDispatch();
     useEffect(() => {
-        if (localStorage.getItem("post") === null) {
-            dispatch(getPost());
-            localStorage.setItem("post", JSON.stringify(post));
+        async function apiFetch() {
+            const [users, posts, comments] = await Promise.all([
+                fetch('https://jsonplaceholder.typicode.com/users'),
+                fetch('https://jsonplaceholder.typicode.com/posts'),
+                fetch('https://jsonplaceholder.typicode.com/comments'),
+            ])
+            const usersRes = await users.json();
+            setUser(usersRes.find(user => user.id == userId));
+            const postsRes = await posts.json();
+            setPost(postsRes.find(post => post.id == postId));
+            const commentsRes = await comments.json();
+            setComment(commentsRes.filter(comment => comment.postId == postId));
         }
-        if (localStorage.getItem("comment") === null ||localStorage.getItem("comment") == []) {
-            dispatch(getComment());
-            localStorage.setItem("comment", JSON.stringify(comment));
-        }
-        if (localStorage.getItem("user") === null) {
-            dispatch(getUser());
-            localStorage.setItem("user", JSON.stringify(user));
-        }
-
-        // dispatch(getAlbum());
-        // localStorage.setItem("album", JSON.stringify(album));
-        // dispatch(getPhotos());
-        // localStorage.setItem("photo", JSON.stringify(photos));
-        console.log(comment)
-        console.log(localStorage.getItem("comment"))
-
-        filterData();
+        apiFetch();
     }, [])
-    //getComment()
-
-    const filterData = () => {
-        let posts = JSON.parse(localStorage.getItem('post'));
-        let users = JSON.parse(localStorage.getItem('user'));
-        let comments = JSON.parse(localStorage.getItem('comment'));
-
-        setPostRes(posts.find(posts => posts.id == postId));
-        setUserRes(users.find(users => users.id == userId));
-        setCommentRes(comments.filter(comments => comments.postId == postId))
-    }
-
-    //comment post id
-
-
-
+    console.log(comment)
     return (
-        <div className="container">
-            <Link to='/userDetails' state={{ userId: userRes.id }}>Username: {userRes.name}</Link>
-            <div>Post Title: {postRes.title}</div>
-            <div>Post Body: {postRes.body}</div>
-            <div>Comment: {commentRes.map(comment => <div key={comment.id}>{comment.body}</div>)}</div>
-            <div>Comment Name: {commentRes.map(comment => <div key={comment.id}>{comment.name}</div>)}</div>
+        <div className="container ">
+            <h1 className="text-center mt-4">Detail Post</h1>
+            <div className="card mb-2">
+                <div className="card-body">
+                    <div className="d-flex align-items-center mb-3">
+                        <img width={60} className="rounded-circle me-3" src="https://dummyimage.com/100x100/000/a4a5ab" alt="userPhoto" />
+                        <div className="user">
+                            <h5 className="card-title">
+                            <Link to='/userDetails' state={{ userId: user.id }}>{user.name}</Link>
+                            </h5>
+                        </div>
+                    </div>
+                    <h6 className="card-text mb-2">{post.title}</h6>
+                    <p className="card-text mb-0 pb-2">{post.body}</p>
+                </div>
+                <div className="card-body comments">
+                    <div className="text-center border-bottom border-secondary py-3">{comment.length} comments</div>
+                    <div className="d-flex justify-content-center flex-wrap mt-3">
+                        {comment.map(comment => (
+                            <div className="comment mb-3 col-sm-8 d-flex align-items-center">
+                                <img width={60} className="rounded-circle me-3" src="https://dummyimage.com/100x100/000/a4a5ab" alt="userPhoto" />
+                                <div className="userComment">
+                                    <p className="m-0"><span style={{fontWeight:"bold"}}>{comment.name}</span> {comment.body}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            {/* <Link to='/userDetails' state={{ userId: user.id }}>Username: {user.name}</Link>
+            <div>Post Title: {post.title}</div>
+            <div>Post Body: {post.body}</div>
+            <div>Comment: {comment.map(comment => <div key={comment.id}>{comment.body}</div>)}</div>
+            <div>Comment Name: {comment.map(comment => <div key={comment.id}>{comment.name}</div>)}</div> */}
         </div>
     );
 }
