@@ -21,7 +21,7 @@ const ListsPosts = () => {
     console.log(user)
     return (
         <div className="container listPost">
-            <h1 className="text-center mt-4">List Post</h1>
+            <h1 className="mt-4">List Post</h1>
             {post.length==0?<div className="d-flex justify-content-center"><div class="loader"></div></div>:post.map(post => (
                 <Link to="/details" state={{ userId: post.userId, postId: post.id }} className="cardLink" key={post.id}>
                     <div className="card mb-2">

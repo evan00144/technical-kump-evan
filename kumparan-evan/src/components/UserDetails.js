@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import './UserDetails.css'
 import $ from 'jquery';
 import arrowUp from '../icon/arrowUp.svg'
@@ -14,6 +14,7 @@ const UserDetails = (props) => {
     const [photo, setPhoto] = useState([]);
 
     const [photoId, setPhotoId] = useState(1);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -42,7 +43,7 @@ const UserDetails = (props) => {
     })
     return (
         <div className="container userDetails">
-            <h1 className="text-center mt-4">User Details</h1>
+            <h1 className="mt-4"><i onClick={() => navigate(-1)} class="backButton fa-solid fa-arrow-left me-3"></i>User Details</h1>
             <div className="userProfile card position-relative overflow-hidden">
                 <div className="upper position-relative">
                     <div className="userImage position-absolute bottom-0">

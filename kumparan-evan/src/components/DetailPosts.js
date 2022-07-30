@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import './DetailPosts.css'
 
 
@@ -9,6 +9,7 @@ const DetailPosts = (props) => {
     const [post, setPost] = useState([]);
     const [user, setUser] = useState([]);
     const [comment, setComment] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function apiFetch() {
@@ -29,7 +30,7 @@ const DetailPosts = (props) => {
     console.log(comment)
     return (
         <div className="container ">
-            <h1 className="text-center mt-4">Detail Post</h1>
+            <h1 className="mt-4"><i onClick={() => navigate(-1)} class="backButton fa-solid fa-arrow-left me-3"></i>Detail Post</h1>
             <div className="card mb-2">
                 <div className="card-body">
                     <div className="d-flex align-items-center mb-3">
