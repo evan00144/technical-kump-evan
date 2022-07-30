@@ -6,3 +6,38 @@
 .cardLink:hover{
     color: #000;
 }
+
+.card{
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.listPost .card:hover{
+    background-color: rgb(162, 162, 162);
+    transition: 0.3s;
+}
+
+.card-subtitle{
+    font-weight: normal !important;
+}
+
+body{
+    background-color: #E6E6E6;
+}
+
+
+.loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid black; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    display: flex; 
+    justify-content: center;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
