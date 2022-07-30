@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import './ListPosts.css';
-const ListsPosts = (props) => {
+import loading from '../icon/loading.gif';
+const ListsPosts = () => {
     const [post, setPost] = useState([]);
     const [user, setUser] = useState([]);
     useEffect(() => {
@@ -21,7 +22,7 @@ const ListsPosts = (props) => {
     return (
         <div className="container listPost">
             <h1 className="text-center mt-4">List Post</h1>
-            {post.map(post => (
+            {post.length==0?<div className="d-flex justify-content-center"><div class="loader"></div></div>:post.map(post => (
                 <Link to="/details" state={{ userId: post.userId, postId: post.id }} className="cardLink" key={post.id}>
                     <div className="card mb-2">
                         <div className="card-body">

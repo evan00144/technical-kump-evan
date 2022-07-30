@@ -11,7 +11,6 @@ import ListPosts from './components/ListPosts';
 import DetailPosts from './components/DetailPosts';
 import UserDetails from './components/UserDetails';
 import PhotoDetails from './components/PhotoDetails';
-import { Store } from './redux/store';
 
 function App() {
     const [postRes, setPostsRes] = useState([]);

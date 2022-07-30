@@ -1,11 +1,10 @@
 .photo {
-    margin-right: 5px;
-    margin-left: 5px;
-    margin-bottom: 5px;
+
+    margin-bottom: 24px;
 }
 
 .photo img {
-    width: 105px;
+    width: 100%;
     border-radius: 10%;
 }
 
@@ -26,4 +25,33 @@
 .userImage{
     transform: translateY(50%);
     margin-left: 90px;
+}
+.albumList{
+    height: 215px;
+
+
+}
+.album.click .albumList{
+    height: 100%;
+
+}
+
+.viewMore{
+    cursor: pointer;
+    background-color: white;
+     left: 0;
+}
+
+.album.click .viewMore{
+    display: none;
+}
+
+.album.click .closeView{
+    display: block;
+}
+
+.album .closeView{
+    display: none;
+    cursor: pointer;
+    width: 50px;
 }

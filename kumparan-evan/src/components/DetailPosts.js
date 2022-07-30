@@ -46,7 +46,7 @@ const DetailPosts = (props) => {
                 <div className="card-body comments">
                     <div className="text-center border-bottom border-secondary py-3">{comment.length} comments</div>
                     <div className="d-flex justify-content-center flex-wrap mt-3">
-                        {comment.map(comment => (
+                        {comment.length==0 ? <div className="d-flex justify-content-center"><div class="loader"></div></div>:comment.map(comment => (
                             <div className="comment mb-3 col-sm-8 d-flex align-items-center">
                                 <img width={60} className="rounded-circle me-3" src="https://dummyimage.com/100x100/000/a4a5ab" alt="userPhoto" />
                                 <div className="userComment">

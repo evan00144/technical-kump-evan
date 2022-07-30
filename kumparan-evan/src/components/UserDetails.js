@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Link, useLocation } from "react-router-dom";
 import './UserDetails.css'
+import $ from 'jquery';
+import arrowUp from '../icon/arrowUp.svg'
+import PhotoDetails from "./PhotoDetails";
 
 const UserDetails = (props) => {
     const location = useLocation()
@@ -10,7 +13,7 @@ const UserDetails = (props) => {
     const [user, setUser] = useState([]);
     const [photo, setPhoto] = useState([]);
 
-    const [page, setPage] = useState(1);
+    const [photoId, setPhotoId] = useState(1);
 
 
     useEffect(() => {
@@ -30,9 +33,13 @@ const UserDetails = (props) => {
         if (photo.length == 0 || user.length == 0 || album.length == 0) {
             apiFetch();
         }
-
     }, [])
-
+    $('.viewMore').on('click', function () {
+        $(this).parent().addClass('click');
+    })
+    $('.closeView').on('click', function () {
+        $(this).parent().parent().parent().removeClass('click');
+    })
     return (
         <div className="container userDetails">
             <h1 className="text-center mt-4">User Details</h1>
@@ -47,32 +54,42 @@ const UserDetails = (props) => {
                         <h4>{user.name}</h4>
                     </div>
                     <div className="userInformation d-flex">
-                        <p className="me-5">{user.email}</p>
-                        <p className="me-5">{user ? user.address && user.address.city : "Loading"}</p>
-                        <p className="me-5">{user ? user.company && user.company.name : "Loading"}</p>
+                        <p className="me-5"><i className="fa-solid fa-envelope me-2"></i>{user.email}</p>
+                        <p className="me-5"><i className="fa-solid fa-location-dot me-2"></i>{user ? user.address && user.address.city : "Loading"}</p>
+                        <p className="me-5"><i className="fa-solid fa-briefcase me-2"></i>{user ? user.company && user.company.name : "Loading"}</p>
                     </div>
                     <h5>Albums</h5>
-                    {album.map(album => (<div key={album.id} className="album">
-                        <div className="albumList card">
-                            <h6>{album.title}</h6>
-                            <p>Photos</p>
-                            <div className="albumImage d-flex flex-wrap">
-                                {photo.length == 0 ? <div>Loading Photo</div> : photo.map(photo => photo.map(photo => <div className="photo" key={photo.id}><Link to="/photoDetails" state={{ photoId: photo.id }}><img src={photo.thumbnailUrl} alt="image" /></Link></div>))}
+                    {album.length == 0 ? <div className="d-flex"><div class="loader"></div></div> : album.map(album => (
+                        <div key={album.id} className="album mb-3 card position-relative overflow-hidden">
+                            <div className="albumList">
+                                <div className="albumTitle mb-3 row mx-0 justify-content-between align-items-center">
+                                    <div className="col-8">
+                                        <h6 className="m-0">{album.title}</h6>
+                                        <p className="m-0">Photos</p>
+                                    </div>
+                                    <img className="closeView col-1" src={arrowUp} alt="icon" />
+                                </div>
+                                <div className="albumImage row mx-0 flex-wrap">
+                                    {photo.length == 0 ? <div className="d-flex justify-content-center"><div class="loader"></div></div>: photo.map(photo => photo.map(photo =>
+                                        <div className="photo col-sm-2" key={photo.id}>
+                                            {/* <Link to="/photoDetails" state={{ photoId: photo.id }}> */}
+                                            {/* <button type="button" className="btn btn-primary" > */}
+                                            <img onClick={() => setPhotoId(photo.id)} data-bs-toggle="modal" data-bs-target="#exampleModal" src={photo.thumbnailUrl} alt="image" />
+                                            {/* </button> */}
+                                            {/* </Link> */}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    </div>))}
+                            <div className="viewMore py-3 position-absolute bottom-0 w-100 text-center">
+                                View More
+                            </div>
+                        </div>))}
                 </div>
 
             </div>
-            <div>Username: {user.name}</div>
-            <div>Email: {user.email}</div>
-            <div>Address: {user ? user.address && user.address.city : "Loading"}</div>
-            <div>Company: {user ? user.company && user.company.name : "Loading"}</div>
-            <div>Albums:
-                -
-                <div className="d-flex flex-wrap">
-                </div>
-
+            <div className="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <PhotoDetails photoId={photoId} />
             </div>
         </div>
     );
